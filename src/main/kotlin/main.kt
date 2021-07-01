@@ -1,5 +1,7 @@
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.*
 import menu.InputMenu
 import menu.MainMenu
@@ -12,12 +14,16 @@ import java.util.*
 
 fun main(args: Array<String>) {
     val csv = Csv()
+    val mapper = CsvMapper().also {
+        it.registerModule(KotlinModule())
+    }
+    val csvJackson = CsvJackson(mapper)
 
     val json = Json(ObjectMapper())
     val xml = Xml(XmlMapper())
     val validator = DefaultValidator()
 
-    val loaders = hashMapOf<Class<*>, Loader>(Csv::class.java to csv)
+    val loaders = hashMapOf<Class<*>, Loader>(Csv::class.java to csv, CsvJackson::class.java to csvJackson)
     val writers = hashMapOf<Class<*>, Writer>(Json::class.java to json, Xml::class.java to xml)
     val validators = hashMapOf<Class<*>, Validator>(DefaultValidator::class.java to validator)
 
