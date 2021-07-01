@@ -21,9 +21,7 @@ class DefaultValidator : Validator {
                 validate(Hotel::url).matches(Regex(REGEX))
             }
         } catch (ex: ConstraintViolationException) {
-            val reason = ex.constraintViolations
-                .map { "${it.property}: ${it.constraint.name}" }
-                .joinToString()
+            val reason = ex.constraintViolations.joinToString { "${it.property}: ${it.constraint.name}" }
             throw ValidationException(reason)
         }
     }
