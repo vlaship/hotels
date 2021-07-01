@@ -1,16 +1,14 @@
-package dao
+package io
 
 import com.opencsv.CSVParserBuilder
 import com.opencsv.CSVReaderBuilder
-import exception.ValidationException
 import model.Hotel
 import mu.KLogging
 import util.Props
-import validation.Validator
 import java.io.FileReader
 import java.lang.NumberFormatException
 
-class CsvDao(private val validator: Validator) : Dao {
+class Csv : Loader, Writer {
 
     companion object : KLogging()
 
@@ -31,8 +29,8 @@ class CsvDao(private val validator: Validator) : Dao {
             reader.forEach {
                 try {
                     hotels.add(buildHotel(it))
-                } catch (ex: ValidationException) {
-                    logger.error("Invalid record [{}], reason: [{}]", it.joinToString(), ex.message)
+                } catch (ex: NumberFormatException) {
+                    logger.error("Invalid record [{}], invalid field stars: [{}]", it.joinToString(), ex.message)
                 }
             }
         }
@@ -44,23 +42,13 @@ class CsvDao(private val validator: Validator) : Dao {
     }
 
     private fun buildHotel(array: Array<String>): Hotel {
-        val hotel = Hotel(
+        return Hotel(
             name = array[0],
             address = array[1],
-            stars = parseStars(array[2]),
+            stars = array[2].toInt(),
             contact = array[3],
             phone = array[4],
             url = array[5]
         )
-        validator.check(hotel)
-        return hotel
-    }
-
-    private fun parseStars(str: String): Int {
-        try {
-            return str.toInt()
-        } catch (ex: NumberFormatException) {
-            throw ValidationException("invalid field stars: ${ex.message}")
-        }
     }
 }

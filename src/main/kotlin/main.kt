@@ -1,8 +1,10 @@
-import dao.CsvDao
+import io.Csv
+import service.LoadService
 import validation.DefaultValidator
 
 fun main(args: Array<String>) {
-    val csv = CsvDao(DefaultValidator())
-
-    csv.load()
+    val loader = Csv()
+    val validator = DefaultValidator()
+    val loadService = LoadService(loader, validator)
+    loadService.load()
 }
