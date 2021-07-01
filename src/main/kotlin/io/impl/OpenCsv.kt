@@ -1,14 +1,15 @@
-package io
+package io.impl
 
 import com.opencsv.CSVParserBuilder
 import com.opencsv.CSVReaderBuilder
+import io.Loader
 import model.Hotel
 import mu.KLogging
 import util.Props
 import java.io.FileReader
 import java.lang.NumberFormatException
 
-class Csv : Loader, Writer {
+class OpenCsv : Loader {
 
     companion object : KLogging()
 
@@ -35,10 +36,6 @@ class Csv : Loader, Writer {
             }
         }
         return hotels
-    }
-
-    override fun write(hotels: List<Hotel>): String {
-        TODO("Not yet implemented")
     }
 
     private fun buildHotel(array: Array<String>): Hotel {

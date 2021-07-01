@@ -1,14 +1,15 @@
-package io
+package io.impl
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import io.Loader
 import model.Hotel
 import mu.KLogging
 import util.Props
 import java.io.FileReader
 
-class CsvJackson(
+class JacksonCsv(
     private val mapper: CsvMapper
 ) : Loader {
 
@@ -28,7 +29,7 @@ class CsvJackson(
                 }
                 hotels.add(readValues.nextValue())
             } catch (ex: InvalidFormatException) {
-                Csv.logger.error(ex.message)
+                OpenCsv.logger.error(ex.message)
             }
         }
 

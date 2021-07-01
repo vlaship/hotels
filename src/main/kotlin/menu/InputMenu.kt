@@ -1,7 +1,7 @@
 package menu
 
-import io.Csv
-import io.CsvJackson
+import io.impl.OpenCsv
+import io.impl.JacksonCsv
 import io.IoFactory
 import io.Loader
 import util.inputInt
@@ -16,13 +16,13 @@ class InputMenu(
         while (true) {
             println("Input Format menu")
             println("Current format is ${loader.javaClass.simpleName}")
-            println("1 - CSV")
-            println("2 - CSV Jackson")
+            println("1 - OpenCsv")
+            println("2 - JacksonCsv")
             println("0 - return to Main menu")
 
             when (inputInt("Make a choose:", scanner)) {
-                1 -> loader = factory.getLoaderInstance(Csv::class.java)
-                2 -> loader = factory.getLoaderInstance(CsvJackson::class.java)
+                1 -> loader = factory.getLoaderInstance(OpenCsv::class.java)
+                2 -> loader = factory.getLoaderInstance(JacksonCsv::class.java)
                 0 -> return loader
                 else -> println("---")
             }

@@ -1,10 +1,11 @@
-package validation
+package validation.impl
 
 import exception.ValidationException
 import model.Hotel
 import org.valiktor.ConstraintViolationException
 import org.valiktor.functions.*
 import org.valiktor.validate
+import validation.Validator
 
 const val REGEX_URL = """https?://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"""
 

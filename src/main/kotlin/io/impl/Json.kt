@@ -1,6 +1,7 @@
-package io
+package io.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.Writer
 import model.Hotel
 
 class Json(

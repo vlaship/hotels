@@ -1,6 +1,7 @@
-package io
+package io.impl
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import io.Writer
 import model.Hotel
 
 class Xml(
