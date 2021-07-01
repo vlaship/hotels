@@ -37,7 +37,7 @@ class Csv : Loader, Writer {
         return hotels
     }
 
-    override fun write(hotels: List<Hotel>) {
+    override fun write(hotels: List<Hotel>): String {
         TODO("Not yet implemented")
     }
 
