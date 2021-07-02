@@ -6,8 +6,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import io.Loader
 import model.Hotel
 import mu.KLogging
-import util.Props
-import java.io.FileReader
+import java.io.File
 
 class JacksonCsv(
     private val mapper: CsvMapper
@@ -15,10 +14,10 @@ class JacksonCsv(
 
     companion object : KLogging()
 
-    override fun load(): List<Hotel> {
+    override fun load(srcPath: File): List<Hotel> {
         val readValues = mapper.readerFor(Hotel::class.java)
             .with(CsvSchema.emptySchema().withHeader())
-            .readValues<Hotel>(FileReader(Props.get("input-path")))
+            .readValues<Hotel>(srcPath)
 
         val hotels = mutableListOf<Hotel>()
 

@@ -5,6 +5,7 @@ import exception.ValidationException
 import model.Hotel
 import mu.KLogging
 import validation.Validator
+import java.io.File
 
 class LoadService(
     private val loader: Loader,
@@ -12,9 +13,10 @@ class LoadService(
 ) {
     companion object : KLogging()
 
-    fun load(path: String): List<Hotel> {
-        logger.info("Loading {}", path)
-        val hotels = loader.load()
+    fun load(srcPath: File): List<Hotel> {
+        logger.info("Loading [{}]", srcPath)
+        val hotels = loader.load(srcPath)
+        logger.info("Validation")
         return hotels
             .asSequence()
             .filter { isValid(it) }
@@ -22,7 +24,6 @@ class LoadService(
     }
 
     private fun isValid(it: Hotel): Boolean = try {
-        logger.info("Validation")
         validator.validate(it)
         true
     } catch (ex: ValidationException) {

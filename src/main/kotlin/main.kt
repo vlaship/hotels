@@ -1,44 +1,87 @@
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.csv.CsvMapper
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import io.*
-import io.impl.JacksonCsv
+import factory.getLoader
+import factory.getValidator
+import factory.getWriter
+import io.Loader
+import io.Writer
 import io.impl.Json
 import io.impl.OpenCsv
-import io.impl.Xml
-import menu.InputMenu
-import menu.MainMenu
-import menu.OutputMenu
-import menu.ValidatorMenu
+import org.apache.commons.cli.CommandLine
+import service.Converter
+import service.LoadService
+import service.WriteService
+import util.Props
 import util.parseArgs
 import validation.Validator
-import validation.ValidatorFactory
 import validation.impl.DefaultValidator
-import java.util.*
+import java.io.File
+import java.nio.file.Path
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
 
     val cmd = parseArgs(args)
 
-    val csv = OpenCsv()
-    val mapper = CsvMapper().also {
-        it.registerModule(KotlinModule())
+    val loader: Loader
+    val writer: Writer
+    val validator: Validator
+
+    try {
+        loader = getLoader(cmd)
+        writer = getWriter(cmd)
+        validator = getValidator(cmd)
+    } catch (ex: IllegalArgumentException) {
+        System.err.println("Invalid format or validator type")
+        exitProcess(0)
     }
-    val csvJackson = JacksonCsv(mapper)
 
-    val json = Json(ObjectMapper())
-    val xml = Xml(XmlMapper())
-    val validator = DefaultValidator()
+    val srcPath = Path.of(cmd.getOptionValue("s")).toFile()
+    val dstPath = getDestinationFile(cmd, writer)
 
-    val loaders = hashMapOf<Class<*>, Loader>(OpenCsv::class.java to csv, JacksonCsv::class.java to csvJackson)
-    val writers = hashMapOf<Class<*>, Writer>(Json::class.java to json, Xml::class.java to xml)
-    val validators = hashMapOf<Class<*>, Validator>(DefaultValidator::class.java to validator)
+    val loadService = LoadService(loader, validator)
+    val writeService = WriteService(writer)
+    Converter(loadService, writeService).convert(srcPath, dstPath)
+}
 
-    val scanner = Scanner(System.`in`)
-    val inputMenu = InputMenu(scanner, IoFactory(loaders, writers), csv)
-    val outputMenu = OutputMenu(scanner, IoFactory(loaders, writers), json)
-    val validatorMenu = ValidatorMenu(scanner, ValidatorFactory(validators), validator)
+private fun getDestinationFile(cmd: CommandLine, writer: Writer): File {
+    val dstPath = if (cmd.hasOption("d")) {
+        Path.of(cmd.getOptionValue("d")).toFile()
+    } else {
+        destinationFile(writer)
+    }
+    return dstPath
+}
 
-    MainMenu(scanner, inputMenu, outputMenu, validatorMenu, csv, json, validator).show()
+private fun getValidator(cmd: CommandLine): Validator {
+    val validator = if (cmd.hasOption("v")) {
+        getValidator(cmd.getOptionValue("v"))
+    } else {
+        DefaultValidator()
+    }
+    return validator
+}
+
+private fun getWriter(cmd: CommandLine): Writer {
+    val writer = if (cmd.hasOption("o")) {
+        getWriter(cmd.getOptionValue("o"))
+    } else {
+        Json(ObjectMapper())
+    }
+    return writer
+}
+
+private fun getLoader(cmd: CommandLine): Loader {
+    val loader = if (cmd.hasOption("i")) {
+        getLoader(cmd.getOptionValue("i"))
+    } else {
+        OpenCsv()
+    }
+    return loader
+}
+
+private fun destinationFile(writer: Writer): File {
+    val format = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Props.get("output-filename-pattern")))
+    return Path.of("$format.${writer.javaClass.simpleName}").toFile()
 }

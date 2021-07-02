@@ -1,7 +1,9 @@
 package io
 
 import model.Hotel
+import java.io.File
+import java.nio.file.Path
 
 interface Loader {
-    fun load(): List<Hotel>
+    fun load(srcPath: File): List<Hotel>
 }

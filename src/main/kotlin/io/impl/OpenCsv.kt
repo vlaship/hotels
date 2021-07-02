@@ -6,6 +6,7 @@ import io.Loader
 import model.Hotel
 import mu.KLogging
 import util.Props
+import java.io.File
 import java.io.FileReader
 import java.lang.NumberFormatException
 
@@ -13,14 +14,14 @@ class OpenCsv : Loader {
 
     companion object : KLogging()
 
-    override fun load(): List<Hotel> {
+    override fun load(srcPath: File): List<Hotel> {
         val csvParser = CSVParserBuilder()
             .withSeparator(Props.get("csv-delimiter")[0])
             .build()
 
         val hotels = mutableListOf<Hotel>()
 
-        val fileReader = FileReader(Props.get("input-path"))
+        val fileReader = FileReader(srcPath)
         fileReader.use {
             val reader = CSVReaderBuilder(fileReader)
                 .withCSVParser(csvParser)

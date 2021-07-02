@@ -13,7 +13,7 @@ fun parseArgs(args: Array<String>): CommandLine {
             println("Input formats: OpenCsv, JacksonCsv\n\tdefault: OpenCsv\n")
             println("Output formats: JacksonJson, JacksonXml\n\tdefault: JacksonJson\n")
             println("Validators: default\n\tdefault: default\n")
-            println("Default destination filename is yyyyMMdd_HHmmss")
+            println("Default destination filename is ${Props.get("output-filename-pattern")}")
             exitProcess(0)
         }
 
