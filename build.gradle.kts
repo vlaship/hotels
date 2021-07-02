@@ -21,6 +21,7 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:1.7.31")
     implementation("org.slf4j:slf4j-api:1.7.31")
     implementation("io.github.microutils:kotlin-logging:2.0.8")
+    implementation("commons-cli:commons-cli:1.4")
 }
 
 tasks.withType<KotlinCompile>() {

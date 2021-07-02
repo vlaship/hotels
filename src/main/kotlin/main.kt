@@ -11,12 +11,16 @@ import menu.InputMenu
 import menu.MainMenu
 import menu.OutputMenu
 import menu.ValidatorMenu
-import validation.DefaultValidator
+import util.parseArgs
 import validation.Validator
 import validation.ValidatorFactory
+import validation.impl.DefaultValidator
 import java.util.*
 
 fun main(args: Array<String>) {
+
+    val cmd = parseArgs(args)
+
     val csv = OpenCsv()
     val mapper = CsvMapper().also {
         it.registerModule(KotlinModule())

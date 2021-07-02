@@ -6,8 +6,8 @@ import service.Converter
 import service.LoadService
 import service.WriteService
 import util.inputInt
-import validation.DefaultValidator
 import validation.Validator
+import validation.impl.DefaultValidator
 import java.util.*
 
 class MainMenu(

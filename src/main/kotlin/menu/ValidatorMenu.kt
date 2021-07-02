@@ -1,9 +1,9 @@
 package menu
 
 import util.inputInt
-import validation.DefaultValidator
 import validation.Validator
 import validation.ValidatorFactory
+import validation.impl.DefaultValidator
 import java.util.*
 
 class ValidatorMenu(
