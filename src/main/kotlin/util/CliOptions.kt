@@ -23,7 +23,7 @@ fun parseArgs(args: Array<String>): CommandLine {
         }
         cmd
     } catch (exp: ParseException) {
-        System.err.println("Invalid arguments. Reason: " + exp.message)
+        System.err.println("Invalid arguments. Reason: ${exp.message}")
         printHelp(options)
     }
 }

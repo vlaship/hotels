@@ -17,11 +17,12 @@ class WriteService(
 ) {
     companion object : KLogging()
 
-    fun write(hotels: List<Hotel>) {
+    fun write(hotels: List<Hotel>, outputPath: String) {
+        logger.info("Validation", outputPath)
         val str = listOf(writer.write(hotels))
         val filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern(FILENAME_PATTERN))
         val ext = writer::class.java.simpleName
-        val path = Path.of(Props.get("output-path"))
+        val path = Path.of(outputPath)
         try {
             if (Files.notExists(path)) {
                 Files.createDirectories(path)

@@ -12,7 +12,8 @@ class LoadService(
 ) {
     companion object : KLogging()
 
-    fun load(): List<Hotel> {
+    fun load(path: String): List<Hotel> {
+        logger.info("Loading {}", path)
         val hotels = loader.load()
         return hotels
             .asSequence()
@@ -21,6 +22,7 @@ class LoadService(
     }
 
     private fun isValid(it: Hotel): Boolean = try {
+        logger.info("Validation")
         validator.validate(it)
         true
     } catch (ex: ValidationException) {
