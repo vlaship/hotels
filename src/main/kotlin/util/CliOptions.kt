@@ -37,7 +37,7 @@ private fun printHelp(options: Options): CommandLine {
 private fun buildOptions(): Options {
     val options = Options()
 
-    options.addOption("i", "input-format", true, "input format")
+    options.addOption("i", "input-format", true, "[REQUIRED] input format")
     options.addOption("o", "output-format", true, "output format")
     options.addOption("s", "source-file", true, "source file")
     options.addOption("d", "destination-file", true, "destination file")
