@@ -38,6 +38,10 @@ fun main(args: Array<String>) {
     }
 
     val srcPath = Path.of(cmd.getOptionValue("s")).toFile()
+    if (!srcPath.exists()) {
+        System.err.println("Source file [$srcPath] not found")
+    }
+
     val dstPath = getDestinationFile(cmd, writer)
 
     val loadService = LoadService(loader, validator)
@@ -46,39 +50,35 @@ fun main(args: Array<String>) {
 }
 
 private fun getDestinationFile(cmd: CommandLine, writer: Writer): File {
-    val dstPath = if (cmd.hasOption("d")) {
+    return if (cmd.hasOption("d")) {
         Path.of(cmd.getOptionValue("d")).toFile()
     } else {
         destinationFile(writer)
     }
-    return dstPath
 }
 
 private fun getValidator(cmd: CommandLine): Validator {
-    val validator = if (cmd.hasOption("v")) {
+    return if (cmd.hasOption("v")) {
         getValidator(cmd.getOptionValue("v"))
     } else {
         DefaultValidator()
     }
-    return validator
 }
 
 private fun getWriter(cmd: CommandLine): Writer {
-    val writer = if (cmd.hasOption("o")) {
+    return if (cmd.hasOption("o")) {
         getWriter(cmd.getOptionValue("o"))
     } else {
         Json(ObjectMapper())
     }
-    return writer
 }
 
 private fun getLoader(cmd: CommandLine): Loader {
-    val loader = if (cmd.hasOption("i")) {
+    return if (cmd.hasOption("i")) {
         getLoader(cmd.getOptionValue("i"))
     } else {
         OpenCsv()
     }
-    return loader
 }
 
 private fun destinationFile(writer: Writer): File {

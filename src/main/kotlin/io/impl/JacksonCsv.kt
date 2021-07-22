@@ -28,7 +28,7 @@ class JacksonCsv(
                 }
                 hotels.add(readValues.nextValue())
             } catch (ex: InvalidFormatException) {
-                OpenCsv.logger.error(ex.message)
+                logger.error(ex.message)
             }
         }
 

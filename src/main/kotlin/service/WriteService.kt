@@ -16,9 +16,6 @@ class WriteService(
         logger.info("Writing file [{}]", dstPath)
         val str = listOf(writer.write(hotels))
         try {
-            if (dstPath.exists()) {
-                dstPath.createNewFile()
-            }
             dstPath.writeText(str.joinToString("\n"), StandardCharsets.UTF_8)
             println("File file [$dstPath] was saved successfully")
         } catch (ex: IOException) {

@@ -1,6 +1,6 @@
 # hotels
 
-## Task:
+## Task
 Write a command line program that fulfills the following requirements:
 
 1. It reads data from an input CSV file. We provide a sample `hotels.csv` file with the structure that the program may
@@ -23,4 +23,31 @@ Write a command line program that fulfills the following requirements:
       always nice.
     - Consider what should happen when the tool fails and how easy it is to debug a problem.
     - We understand that the specifications for the tasks are vague. This is intended. In case of doubt, try to come up
-      with sensible defaults and document your decisions. 
+      with sensible defaults and document your decisions.
+
+# Usage
+
+## cli options
+ -d,--destination-file <arg>   destination file
+
+ -h,--help                     help
+
+ -i,--input-format <arg>       [REQUIRED] input format
+
+ -o,--output-format <arg>      output format
+
+ -s,--source-file <arg>        source file
+
+ -v,--validator <arg>          type of validator
+
+## formats and validators
+* Input formats: OpenCsv, JacksonCsv
+	default: OpenCsv
+
+* Output formats: JacksonJson, JacksonXml
+	default: JacksonJson
+
+* Validators: default
+	default: default
+
+* Default destination filename is yyyyMMdd_HHmmss
